@@ -7,8 +7,9 @@
 //   1. The first few numbers (called the prefix)
 //   2. The number of digits in the number (called the length)
 
+
 var detectNetwork = function(cardNumber) {
-  var prefix = cardNumber.slice(0,2);
+  let prefix = cardNumber.slice(0,2);
   
   //Diner's Club
   if ((prefix == '38' || prefix == '39') && cardNumber.length == 14) {
@@ -20,8 +21,20 @@ var detectNetwork = function(cardNumber) {
     return 'American Express';
   }
   
-  // Visa
-  if ((cardNumber.slice(0,1) == '4') && (cardNumber.length == 13 || cardNumber.length == 16 ||cardNumber.length == 19)) {
+  // Visa and Switch
+  if ((cardNumber.slice(0,4) == '4903' ||
+       cardNumber.slice(0,4) == '4905' ||
+       cardNumber.slice(0,4) == '4911' ||
+       cardNumber.slice(0,4) == '4936' ||
+       cardNumber.slice(0,6) == '564182' ||
+       cardNumber.slice(0,6) == '633110' ||
+       cardNumber.slice(0,4) == '6333' ||
+       cardNumber.slice(0,4) == '6759') && 
+       (cardNumber.length == 16 ||
+       cardNumber.length == 18 ||
+       cardNumber.length == 19)) {
+         return 'Switch';
+  } else if ((cardNumber.slice(0,1) == '4') && (cardNumber.length == 13 || cardNumber.length == 16 ||cardNumber.length == 19)) {
     return "Visa";
   }
   
@@ -54,6 +67,19 @@ var detectNetwork = function(cardNumber) {
      cardNumber.slice(0,4) == '6304')) {
        return 'Maestro';
   }
+  
+  
+  // China UnionPay
+  if ((622126 <= Number(cardNumber.slice(0,6)) <= 622925 || 
+      624 <= Number(cardNumber.slice(0,3)) <= 626 || 
+      6282 <= Number(cardNumber.slice(0,4)) <= 6288) && (
+      cardNumber.length == 16 || 
+      cardNumber.length == 17 ||
+      cardNumber.length == 18 ||
+      cardNumber.length == 19)) {
+        return 'China UnionPay';
+  }
+  
   
   
   // Note: `cardNumber` will always be a string
